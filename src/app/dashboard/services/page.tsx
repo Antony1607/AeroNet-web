@@ -137,7 +137,7 @@ export default function ServicesPage() {
       // Aquí el DTO de UpdateServiceDto permite cosas opcionales, enviaremos lo que se edite.
       customer_id: '', // Not normally edited
       plan_id: '',     // Not normally edited
-      address_text: service.address_text || '',
+      address_text: (service as any).address_text || '',
       status: service.status || 'pending',
       billing_day: (service as any).billing_day || 1,
       monthly_amount: (service as any).monthly_amount || 0,
