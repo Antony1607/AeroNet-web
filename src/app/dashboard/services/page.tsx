@@ -155,21 +155,28 @@ export default function ServicesPage() {
 
     try {
       if (isEditing && editingId) {
-        // Only send editable fields for PATCH
-        const updateData = {
+        // 🚀 SOLUCIÓN EN LA EDICIÓN: Armamos los datos básicos
+        const updateData: any = {
           address_text: formData.address_text,
           status: formData.status,
           billing_day: formData.billing_day,
           monthly_amount: formData.monthly_amount,
-          ip_address: formData.ip_address,
-          mac_address: formData.mac_address,
         };
+
+        // Solo incluimos la IP si el técnico escribió algo real en la caja de texto
+        if (formData.ip_address && formData.ip_address.trim() !== '') {
+          updateData.ip_address = formData.ip_address;
+        }
+
+        // Solo incluimos la MAC si el técnico escribió algo real en la caja de texto
+        if (formData.mac_address && formData.mac_address.trim() !== '') {
+          updateData.mac_address = formData.mac_address;
+        }
+
         await api.patch(`/services/${editingId}`, updateData);
       } else {
-        // 🚀 SOLUCIÓN: Aislamos ip_address y mac_address para la creación
+        // Creación limpia (Ya corregida antes)
         const { ip_address, mac_address, ...creationData } = formData;
-        
-        // Enviamos el JSON limpio que el DTO del backend espera con precisión
         await api.post('/services', creationData);
       }
       await fetchServices();
