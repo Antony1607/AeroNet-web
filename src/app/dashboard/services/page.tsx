@@ -166,7 +166,11 @@ export default function ServicesPage() {
         };
         await api.patch(`/services/${editingId}`, updateData);
       } else {
-        await api.post('/services', formData);
+        // 🚀 SOLUCIÓN: Aislamos ip_address y mac_address para la creación
+        const { ip_address, mac_address, ...creationData } = formData;
+        
+        // Enviamos el JSON limpio que el DTO del backend espera con precisión
+        await api.post('/services', creationData);
       }
       await fetchServices();
       setIsModalOpen(false);
